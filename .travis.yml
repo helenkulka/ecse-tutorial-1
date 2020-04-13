@@ -1,3 +1,2 @@
 language: java
-script:
-- ./gradlew test -i
+script: cd EventRegistration-Backend && gradle build
