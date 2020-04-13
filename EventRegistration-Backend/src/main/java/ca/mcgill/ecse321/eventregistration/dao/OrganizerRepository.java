@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import ca.mcgill.ecse321.eventregistration.model.*;
 
 public interface OrganizerRepository extends CrudRepository<Organizer, String> {
-    Organizer findByName(String name);
+    Organizer findOrganizerByName(String name);
 }

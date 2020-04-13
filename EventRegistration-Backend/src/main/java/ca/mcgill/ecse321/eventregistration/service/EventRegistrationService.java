@@ -274,6 +274,7 @@ public class EventRegistrationService {
 		} 
 
 		r.setCreditCard(c);
+		registrationRepository.save(r);
 	}
 
 	/////ORGANIZERS CLASSES/////////
@@ -297,14 +298,15 @@ public class EventRegistrationService {
 
 	@Transactional
 	public void organizesEvent(Organizer organizer, Event event) {
-		if (organizer == null) {
+		if (organizer == null || organizerRepository.findOrganizerByName(organizer.getName()) == null){
 			throw new IllegalArgumentException("Organizer needs to be selected for organizes!");
 		} 
-		if (event == null || getEvent(event.getName()) == null) {
+		if (event == null || eventRepository.findByName(event.getName()) == null) {
 			throw new IllegalArgumentException("Event does not exist!");
 		}
 
 		organizer.setOrganizes(event);
+		organizerRepository.save(organizer);
 	}
 
 	@Transactional
@@ -312,7 +314,7 @@ public class EventRegistrationService {
 		if (name == null || name.equals("") || name.equals(" ")) {
 			throw new IllegalArgumentException("Person name cannot be empty!");
 		}
-		return organizerRepository.findByName(name);
+		return organizerRepository.findOrganizerByName(name);
 
 
 	}
