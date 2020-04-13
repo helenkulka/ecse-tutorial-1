@@ -9,8 +9,8 @@ import javax.persistence.ManyToMany;
 public class Organizer extends Person {
     private Set<Event> organizedEvents;
 
-    public void setOrganizes(Event event) {
-        this.organizedEvents.add(event);
+    public void setOrganizes(Set<Event> events) {
+        this.organizedEvents = events;
     }
 
     @ManyToMany

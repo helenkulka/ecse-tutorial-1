@@ -249,17 +249,17 @@ public class EventRegistrationService {
 	@Transactional
 	public CreditCard createCreditCardPay(String id, int amount) {
 		String error = "";
-		if (id == null || id.trim().length() == 0 || id.length() != 9 || id.charAt(4) != '-' || !Character.isDigit(id.charAt(0)) || !Character.isDigit(id.charAt(1)) || !Character.isDigit(id.charAt(2)) || !Character.isDigit(id.charAt(3))
+		if (id == null || id.equals(" ") || id.equals("") || id.length() != 9 || id.charAt(4) != '-' || !Character.isDigit(id.charAt(0)) || !Character.isDigit(id.charAt(1)) || !Character.isDigit(id.charAt(2)) || !Character.isDigit(id.charAt(3))
 		|| !Character.isDigit(id.charAt(5)) || !Character.isDigit(id.charAt(6)) || !Character.isDigit(id.charAt(7)) || !Character.isDigit(id.charAt(8))) {
-			error = error + "Account number is null or has wrong format!";
+			throw new IllegalArgumentException("Account number is null or has wrong format!");
 		}
 		if (amount < 0) {
-			error = error + "Payment amount cannot be negative!";
+			throw new IllegalArgumentException("Payment amount cannot be negative!");
 		}
-		error = error.trim();
-		if (error.length() > 0) {
-			throw new IllegalArgumentException(error);
-		}
+		// error = error.trim();
+		// if (error.length() > 0) {
+		// 	throw new IllegalArgumentException(error);
+		// }
 		CreditCard creditCard = new CreditCard();
 		creditCard.setAccountNumber(id);
 		creditCard.setAmount(amount);
@@ -269,12 +269,13 @@ public class EventRegistrationService {
 
 	@Transactional
 	public void pay(Registration r, CreditCard c) {
-		if (r == null || c == null) {
+		if (c.equals(null) || r.equals(null)) {
 			throw new IllegalArgumentException("Registration and payment cannot be null!");
 		} 
-
+		else {
 		r.setCreditCard(c);
 		registrationRepository.save(r);
+		}
 	}
 
 	/////ORGANIZERS CLASSES/////////
@@ -305,7 +306,9 @@ public class EventRegistrationService {
 			throw new IllegalArgumentException("Event does not exist!");
 		}
 
-		organizer.setOrganizes(event);
+		Set<Event> events = organizer.getOrganizes();
+		events.add(event);
+		organizer.setOrganizes(events);
 		organizerRepository.save(organizer);
 	}
 
