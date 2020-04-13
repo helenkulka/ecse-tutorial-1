@@ -249,7 +249,7 @@ public class EventRegistrationService {
 	@Transactional
 	public CreditCard createCreditCardPay(String id, int amount) {
 		String error = "";
-		if (id == null || id.trim().length() == 0 || id.length() != 8 || id.charAt(4) != '-' || !Character.isDigit(id.charAt(0)) || !Character.isDigit(id.charAt(1)) || !Character.isDigit(id.charAt(2)) || !Character.isDigit(id.charAt(3))
+		if (id == null || id.trim().length() == 0 || id.length() != 9 || id.charAt(4) != '-' || !Character.isDigit(id.charAt(0)) || !Character.isDigit(id.charAt(1)) || !Character.isDigit(id.charAt(2)) || !Character.isDigit(id.charAt(3))
 		|| !Character.isDigit(id.charAt(5)) || !Character.isDigit(id.charAt(6)) || !Character.isDigit(id.charAt(7)) || !Character.isDigit(id.charAt(8))) {
 			error = error + "Account number is null or has wrong format!";
 		}
@@ -279,7 +279,7 @@ public class EventRegistrationService {
 	/////ORGANIZERS CLASSES/////////
 	@Transactional 
 	public Organizer createOrganizer(String name) {
-		if (name == null || name.trim().length() == 0) {
+		if (name == null || name.equals("") || name.equals(" ")) {
 			throw new IllegalArgumentException("Organizer name cannot be empty!");
 		} else if (organizerRepository.existsById(name)) {
 			throw new IllegalArgumentException("Organizer has already been created!");
@@ -300,7 +300,7 @@ public class EventRegistrationService {
 		if (organizer == null) {
 			throw new IllegalArgumentException("Organizer needs to be selected for organizes!");
 		} 
-		if (event == null) {
+		if (event == null || getEvent(event.getName()) == null) {
 			throw new IllegalArgumentException("Event does not exist!");
 		}
 
@@ -309,7 +309,7 @@ public class EventRegistrationService {
 
 	@Transactional
 	public Organizer getOrganizer(String name) {
-		if (name == null || name.trim().length() == 0) {
+		if (name == null || name.equals("") || name.equals(" ")) {
 			throw new IllegalArgumentException("Person name cannot be empty!");
 		}
 		return organizerRepository.findByName(name);
