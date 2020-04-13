@@ -4,9 +4,9 @@ import org.springframework.data.repository.CrudRepository;
 
 import ca.mcgill.ecse321.eventregistration.model.*;
 
-public interface CreditCardRepository extends CrudRepository<CreditCard, Integer> {
+public interface CreditCardRepository extends CrudRepository<CreditCard, String> {
     
-    CreditCard findCreditCardByCardID(Integer CardID);
+   CreditCard findByAccountNumber(String accountNumber);
 
 
 }

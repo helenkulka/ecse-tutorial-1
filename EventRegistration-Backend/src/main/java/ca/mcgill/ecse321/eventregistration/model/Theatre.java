@@ -4,14 +4,14 @@ import javax.persistence.Entity;
 
 @Entity
 public class Theatre extends Event {
-    private String theatreTitle;
+    private String title;
 
     public void setTitle(String title) {
-        this.theatreTitle = title;
+        this.title = title;
     }
     
     public String getTitle() {
-        return this.theatreTitle;
+        return this.title;
      }
 
 } 
