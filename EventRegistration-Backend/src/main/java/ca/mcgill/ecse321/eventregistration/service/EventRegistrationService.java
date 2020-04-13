@@ -235,7 +235,7 @@ public class EventRegistrationService {
 	@Transactional
 	public Theatre createTheatre(String name, Date date, Time startTime, Time endTime, String title) {
 		Theatre theatre = new Theatre();
-		theatre = buildTheatre(title, theatre, name, date, startTime, endTime);
+		buildTheatre(title, theatre, name, date, startTime, endTime);
 		theatreRepository.save(theatre);
 		return theatre;
 	}
