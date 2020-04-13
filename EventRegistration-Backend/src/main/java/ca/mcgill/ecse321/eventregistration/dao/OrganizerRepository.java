@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface OrganizerRepository extends CrudRepository<Organizer, String> {
     Organizer findByName(String name);
-    List<Organizer> findAllOrganizers();
 }

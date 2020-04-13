@@ -292,7 +292,7 @@ public class EventRegistrationService {
 
 	@Transactional
 	public List<Organizer> getAllOrganizers() {
-		return organizerRepository.findAllOrganizers();
+		return toList(organizerRepository.findAll());
 	}
 
 	@Transactional
