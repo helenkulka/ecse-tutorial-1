@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface TheatreRepository extends CrudRepository<Theatre, String> {
 
-    List<Theatre> findAllTheatres();
+    List<Theatre> findByTitle(String title);
 
 }

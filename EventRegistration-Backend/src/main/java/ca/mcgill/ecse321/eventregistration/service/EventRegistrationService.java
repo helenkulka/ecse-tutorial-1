@@ -242,7 +242,7 @@ public class EventRegistrationService {
 
 	@Transactional
 	public List<Theatre> getAllTheatres() {
-		return theatreRepository.findAllTheatres();
+		return toList(theatreRepository.findAll());
 	}
 
 	/////CREDIT CARD CLASS///////
