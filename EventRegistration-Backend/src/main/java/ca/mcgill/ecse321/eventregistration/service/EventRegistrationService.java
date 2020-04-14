@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.eventregistration.service;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -247,10 +248,9 @@ public class EventRegistrationService {
 
 	/////CREDIT CARD CLASS///////
 	@Transactional
-	public CreditCard createCreditCardPay(String id, int amount) {
-		String error = "";
-		if (id == null || id.equals(" ") || id.equals("") || id.length() != 9 || id.charAt(4) != '-' || !Character.isDigit(id.charAt(0)) || !Character.isDigit(id.charAt(1)) || !Character.isDigit(id.charAt(2)) || !Character.isDigit(id.charAt(3))
-		|| !Character.isDigit(id.charAt(5)) || !Character.isDigit(id.charAt(6)) || !Character.isDigit(id.charAt(7)) || !Character.isDigit(id.charAt(8))) {
+	public CreditCard createCreditCardPay(String num, int amount) {
+		if (num == null || num .equals(" ") || num.equals("") || num.length() != 9 || num.charAt(4) != '-' || !Character.isDigit(num.charAt(0)) || !Character.isDigit(num.charAt(1)) || !Character.isDigit(num.charAt(2)) || !Character.isDigit(num.charAt(3))
+		|| !Character.isDigit(num.charAt(5)) || !Character.isDigit(num.charAt(6)) || !Character.isDigit(num.charAt(7)) || !Character.isDigit(num.charAt(8))) {
 			throw new IllegalArgumentException("Account number is null or has wrong format!");
 		}
 		if (amount < 0) {
@@ -261,9 +261,8 @@ public class EventRegistrationService {
 		// 	throw new IllegalArgumentException(error);
 		// }
 		CreditCard creditCard = new CreditCard();
-		creditCard.setAccountNumber(id);
+		creditCard.setAccountNumber(num);
 		creditCard.setAmount(amount);
-		creditCardRepository.save(creditCard);
 		return creditCard;
 	}
 
@@ -305,11 +304,16 @@ public class EventRegistrationService {
 		if (event == null || eventRepository.findByName(event.getName()) == null) {
 			throw new IllegalArgumentException("Event does not exist!");
 		}
-
-		Set<Event> events = organizer.getOrganizes();
+		Set<Event> events;
+		if (organizer.getOrganizes().equals(null)) {
+		events = new HashSet<Event>();
+		}
+		else {
+			events = organizer.getOrganizes();
+		}
 		events.add(event);
 		organizer.setOrganizes(events);
-		organizerRepository.save(organizer);
+		
 	}
 
 	@Transactional
