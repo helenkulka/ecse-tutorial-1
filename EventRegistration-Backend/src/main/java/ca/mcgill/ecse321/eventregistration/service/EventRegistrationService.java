@@ -249,15 +249,15 @@ public class EventRegistrationService {
 	/////CREDIT CARD CLASS///////
 	@Transactional
 	public CreditCard createCreditCardPay(String num, int amount) {
+		if (amount < 0) {
+			throw new IllegalArgumentException("Payment amount cannot be negative!");
+		}
 		if (num == null || num .equals(" ") || num.equals("") || num.length() != 9 || num.charAt(4) != '-' || !Character.isDigit(num.charAt(0)) || !Character.isDigit(num.charAt(1)) || !Character.isDigit(num.charAt(2)) || !Character.isDigit(num.charAt(3))
 		|| !Character.isDigit(num.charAt(5)) || !Character.isDigit(num.charAt(6)) || !Character.isDigit(num.charAt(7)) || !Character.isDigit(num.charAt(8))) {
 			throw new IllegalArgumentException("Account number is null or has wrong format!");
 		}
 		else if (creditCardRepository.existsById(num)) {
 			throw new IllegalArgumentException("Credit card has already been created!");
-		}
-		else if (amount < 0) {
-			throw new IllegalArgumentException("Payment amount cannot be negative!");
 		}
 		// error = error.trim();
 		// if (error.length() > 0) {
@@ -310,11 +310,10 @@ public class EventRegistrationService {
 		if (!organizer.getOrganizes().equals(null)) {
 			for(Event e: organizer.getOrganizes()){
 				if(e == event) {
-					throw new IllegalArgumentException("Promoter already promoting event!");
+					throw new IllegalArgumentException("Organizer already organizing event!");
 				}
 				events.add(e);
 			}
-			events = organizer.getOrganizes();
 		}
 		events.add(event);
 		organizer.setOrganizes(events);
