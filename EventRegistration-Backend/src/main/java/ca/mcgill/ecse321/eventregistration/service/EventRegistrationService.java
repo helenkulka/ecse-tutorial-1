@@ -253,7 +253,10 @@ public class EventRegistrationService {
 		|| !Character.isDigit(num.charAt(5)) || !Character.isDigit(num.charAt(6)) || !Character.isDigit(num.charAt(7)) || !Character.isDigit(num.charAt(8))) {
 			throw new IllegalArgumentException("Account number is null or has wrong format!");
 		}
-		if (amount < 0) {
+		else if (creditCardRepository.existsById(num)) {
+			throw new IllegalArgumentException("Credit card has already been created!");
+		}
+		else if (amount < 0) {
 			throw new IllegalArgumentException("Payment amount cannot be negative!");
 		}
 		// error = error.trim();
@@ -263,12 +266,13 @@ public class EventRegistrationService {
 		CreditCard creditCard = new CreditCard();
 		creditCard.setAccountNumber(num);
 		creditCard.setAmount(amount);
+		creditCardRepository.save(creditCard);
 		return creditCard;
 	}
 
 	@Transactional
 	public void pay(Registration r, CreditCard c) {
-		if (c.equals(null) || r.equals(null)) {
+		if (c.equals(null) || r.equals(null) || !creditCardRepository.existsById(c.getAccountNumber()) || !registrationRepository.existsById(r.getId())) {
 			throw new IllegalArgumentException("Registration and payment cannot be null!");
 		} 
 		else {
@@ -297,7 +301,7 @@ public class EventRegistrationService {
 	}
 
 	@Transactional
-	public void organizesEvent(Organizer organizer, Event event) {
+	public Organizer organizesEvent(Organizer organizer, Event event) {
 		if (organizer == null || organizerRepository.findOrganizerByName(organizer.getName()) == null){
 			throw new IllegalArgumentException("Organizer needs to be selected for organizes!");
 		} 
@@ -313,6 +317,8 @@ public class EventRegistrationService {
 		}
 		events.add(event);
 		organizer.setOrganizes(events);
+		organizerRepository.save(organizer);
+		return organizer;
 		
 	}
 
