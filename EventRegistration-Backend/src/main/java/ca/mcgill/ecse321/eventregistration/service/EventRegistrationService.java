@@ -248,15 +248,15 @@ public class EventRegistrationService {
 
 	/////CREDIT CARD CLASS///////
 	@Transactional
-	public CreditCard createCreditCardPay(String num, int amount) {
+	public CreditCard createCreditCardPay(String numb, int amount) {
 		if (amount < 0) {
 			throw new IllegalArgumentException("Payment amount cannot be negative!");
 		}
-		if (num == null || num .equals(" ") || num.equals("") || num.length() != 9 || num.charAt(4) != '-' || !Character.isDigit(num.charAt(0)) || !Character.isDigit(num.charAt(1)) || !Character.isDigit(num.charAt(2)) || !Character.isDigit(num.charAt(3))
-		|| !Character.isDigit(num.charAt(5)) || !Character.isDigit(num.charAt(6)) || !Character.isDigit(num.charAt(7)) || !Character.isDigit(num.charAt(8))) {
+		else if (numb == null || numb.equals(" ") || numb.equals("") || numb.length() != 9 || numb.charAt(4) != '-' || !Character.isDigit(numb.charAt(0)) || !Character.isDigit(numb.charAt(1)) || !Character.isDigit(numb.charAt(2)) || !Character.isDigit(numb.charAt(3))
+		|| !Character.isDigit(numb.charAt(5)) || !Character.isDigit(numb.charAt(6)) || !Character.isDigit(numb.charAt(7)) || !Character.isDigit(numb.charAt(8))) {
 			throw new IllegalArgumentException("Account number is null or has wrong format!");
 		}
-		else if (creditCardRepository.existsById(num)) {
+		else if (creditCardRepository.existsById(numb)) {
 			throw new IllegalArgumentException("Credit card has already been created!");
 		}
 		// error = error.trim();
@@ -264,8 +264,8 @@ public class EventRegistrationService {
 		// 	throw new IllegalArgumentException(error);
 		// }
 		CreditCard creditCard = new CreditCard();
-		creditCard.setAccountNumber(num);
 		creditCard.setAmount(amount);
+		creditCard.setAccountNumber(numb);
 		creditCardRepository.save(creditCard);
 		return creditCard;
 	}
@@ -275,6 +275,9 @@ public class EventRegistrationService {
 		if (c == null || r == null || !creditCardRepository.existsById(c.getAccountNumber()) || !registrationRepository.existsById(r.getId())) {
 			throw new IllegalArgumentException("Registration and payment cannot be null!");
 		} 
+		if (c.getAccountNumber() == null || c.getAmount() == null) {
+			throw new IllegalArgumentException("Registration and payment cannot be null!");
+		}
 		r.setCreditCard(c);
 		registrationRepository.save(r);
 	}
