@@ -272,7 +272,7 @@ public class EventRegistrationService {
 
 	@Transactional
 	public void pay(Registration r, CreditCard c) {
-		if (c.equals(null) || r.equals(null) || !creditCardRepository.existsById(c.getAccountNumber()) || !registrationRepository.existsById(r.getId())) {
+		if (c == null || r == null || !creditCardRepository.existsById(c.getAccountNumber()) || !registrationRepository.existsById(r.getId())) {
 			throw new IllegalArgumentException("Registration and payment cannot be null!");
 		} 
 		r.setCreditCard(c);
@@ -300,17 +300,20 @@ public class EventRegistrationService {
 
 	@Transactional
 	public Organizer organizesEvent(Organizer organizer, Event event) {
-		if (organizer == null || organizerRepository.findOrganizerByName(organizer.getName()) == null){
+		if (organizer == null || !organizerRepository.existsById(organizer.getName())){
 			throw new IllegalArgumentException("Organizer needs to be selected for organizes!");
 		} 
-		if (event == null || eventRepository.findByName(event.getName()) == null) {
+		if (event == null || !eventRepository.existsById(event.getName())) {
 			throw new IllegalArgumentException("Event does not exist!");
 		}
-		Set<Event> events;
-		if (organizer.getOrganizes().equals(null)) {
-		events = new HashSet<Event>();
-		}
-		else {
+		Set<Event> events = new HashSet<Event>();
+		if (!organizer.getOrganizes().equals(null)) {
+			for(Event e: organizer.getOrganizes()){
+				if(e == event) {
+					throw new IllegalArgumentException("Promoter already promoting event!");
+				}
+				events.add(e);
+			}
 			events = organizer.getOrganizes();
 		}
 		events.add(event);
