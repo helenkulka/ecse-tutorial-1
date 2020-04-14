@@ -275,10 +275,8 @@ public class EventRegistrationService {
 		if (c.equals(null) || r.equals(null) || !creditCardRepository.existsById(c.getAccountNumber()) || !registrationRepository.existsById(r.getId())) {
 			throw new IllegalArgumentException("Registration and payment cannot be null!");
 		} 
-		else {
 		r.setCreditCard(c);
 		registrationRepository.save(r);
-		}
 	}
 
 	/////ORGANIZERS CLASSES/////////

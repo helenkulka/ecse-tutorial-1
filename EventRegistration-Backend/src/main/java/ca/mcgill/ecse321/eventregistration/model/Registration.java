@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.eventregistration.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Registration {
@@ -42,7 +43,7 @@ public class Registration {
 
 	private CreditCard creditCard;
 
-	@ManyToOne(optional = false)
+	@OneToOne
 	public CreditCard getCreditCard() {
 		return this.creditCard;
 	}
